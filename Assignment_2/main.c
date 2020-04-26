@@ -16,5 +16,10 @@ int main() {
 
     print_Board() ;
 
+    Move() ;
+
+    print_Board() ;
+
+
     return 0;
 }
