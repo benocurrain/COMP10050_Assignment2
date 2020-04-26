@@ -18,7 +18,7 @@ int main() {
 
     Move() ;
 
-    print_Board() ;
+    print_Board();
 
 
     return 0;

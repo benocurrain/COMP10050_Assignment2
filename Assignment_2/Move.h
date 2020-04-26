@@ -9,5 +9,5 @@
 #include <stdlib.h>
 
 void Move() ;
-
+void print_Boardtest() ;
 #endif //UNTITLED3_MOVE_H

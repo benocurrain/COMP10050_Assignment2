@@ -6,10 +6,12 @@
 #include "intialzing.h"
 
 void Move(){
-   int X_Co, Y_Co, direction,i ;
-   int total_X=0, total_y=0;
-   int no_to_move=0 ;
-   int Player = 1 ;
+   int X_Co, Y_Co; // The co-ordinates from which the user will move pieces to
+   int no_to_move=0,no_spaces = 0 ; // The number of pieces the user will move from selected stack
+   int direction ; // Used for selecting the direction the user will move
+   int total_X=0, total_y=0; // X will be distance left/right, y will be up/down
+   int new_X, new_Y ; // Will be co-ordinates of the stack the user is moving to
+   int Player = 1,i ;
 
    // Getting the stack user would like to move
    do{
@@ -30,6 +32,8 @@ void Move(){
        scanf("%d", &no_to_move);
    }while( (no_to_move<1) || (no_to_move>board[Y_Co][X_Co]->no_Pieces) );
 
+
+
    // Getting the direction the user wants to move
    for(i=0;i<no_to_move;i++) {
        printf("What direction what you like to move?\n1.Up\n2.Down\n3.Left\n4.Right\n");
@@ -44,16 +48,20 @@ void Move(){
        }
    }
 
-   if(board[Y_Co][X_Co]->no_Pieces==1) {
+   // Calculating new co-ordinates
+   new_X = X_Co + total_X ;
+   new_Y = Y_Co + total_y ;
+
+   if(no_to_move==1) {
        // Making piece user wants moved point to top of desire stack
-       board[Y_Co][X_Co]->Top->piece_below = board[Y_Co + total_y][X_Co + total_X]->Top;
+       board[Y_Co][X_Co]->Top->piece_below = board[new_Y][new_X]->Top;
 
        // Updating the amount of pieces on positions
        board[Y_Co][X_Co]->no_Pieces-=no_to_move ;
-       board[Y_Co+total_y][X_Co+total_X]->no_Pieces+=no_to_move ;
+       board[new_Y][new_X]->no_Pieces+=no_to_move ;
 
        // Making position top point to the piece that was just moved
-       board[Y_Co + total_y][X_Co + total_X]->Top = board[Y_Co][X_Co]->Top;
+       board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top;
 
        // Empty position pointing to null
        board[Y_Co][X_Co]->Top = NULL;
@@ -61,18 +69,47 @@ void Move(){
    else{
        // Will be used to find and store the bottom of stack being moved
        struct piece *currPtr;
-       currPtr = malloc(sizeof(struct piece));
-       currPtr = board[][]->Top->piece_below;
-       // Will be used and store the top the of stack being moved
-       struct piece *moving_top;
-       moving_top = malloc(sizeof(struct piece));
-       moving_top = board[][]->Top->piece_below;
+       currPtr = &board[Y_Co][X_Co]->Top;
 
        switch(no_to_move){
            case 5:
+               for(i=0;i<4;i++)
+                   currPtr = &currPtr->piece_below ;
+               board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below->piece_below =board[new_Y][new_X]->Top;
+               board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
+               board[Y_Co][X_Co]->Top = currPtr->piece_below ;
+               free(currPtr) ;
+               break ;
 
+           case 4:
+               for(i=0;i<3;i++)
+                   currPtr = &currPtr->piece_below ;
+               board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below =board[new_Y][new_X]->Top;
+               board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
+               board[Y_Co][X_Co]->Top = currPtr->piece_below ;
+               free(currPtr) ;
+               break ;
+
+           case 3:
+               for(i=0;i<2;i++)
+                   currPtr = &currPtr->piece_below ;
+               board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below =board[new_Y][new_X]->Top;
+               board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
+               board[Y_Co][X_Co]->Top = currPtr->piece_below ;
+               free(currPtr) ;
+               break ;
+
+           case 2:
+               currPtr = &currPtr->piece_below ;
+               board[Y_Co][X_Co]->Top->piece_below->piece_below = board[new_Y][new_X]->Top;
+               board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
+               board[Y_Co][X_Co]->Top = NULL ;
+               free(currPtr) ;
+               break ;
+
+           default: printf("It's fucked mate") ; break ;
        }
-
    }
-    return ;
+
+       return ;
 }
