@@ -7,7 +7,7 @@
 
 void Move(){
    int X_Co, Y_Co; // The co-ordinates from which the user will move pieces to
-   int no_to_move=0,no_spaces = 0 ; // The number of pieces the user will move from selected stack
+   int no_to_move=0,no_spaces = 0 ; // The number of pieces the user will move from selected stack, and the number os spaces they will move it
    int direction ; // Used for selecting the direction the user will move
    int total_X=0, total_y=0; // X will be distance left/right, y will be up/down
    int new_X, new_Y ; // Will be co-ordinates of the stack the user is moving to
@@ -32,10 +32,14 @@ void Move(){
        scanf("%d", &no_to_move);
    }while( (no_to_move<1) || (no_to_move>board[Y_Co][X_Co]->no_Pieces) );
 
-
+   // Asking how many spaces the user woould like to move their stack
+    do{
+        printf("How many spaces would you like to move the stack");
+        scanf("%d", &no_spaces);
+    }while( (no_spaces<1) || (no_spaces>no_to_move) );
 
    // Getting the direction the user wants to move
-   for(i=0;i<no_to_move;i++) {
+   for(i=0;i<no_spaces;i++) {
        printf("What direction what you like to move?\n1.Up\n2.Down\n3.Left\n4.Right\n");
        scanf("%d", &direction);
 
@@ -52,7 +56,7 @@ void Move(){
    new_X = X_Co + total_X ;
    new_Y = Y_Co + total_y ;
 
-   if(no_to_move==1) {
+   if(no_to_move==11) {
        // Making piece user wants moved point to top of desire stack
        board[Y_Co][X_Co]->Top->piece_below = board[new_Y][new_X]->Top;
 
@@ -71,41 +75,60 @@ void Move(){
        struct piece *currPtr;
        currPtr = &board[Y_Co][X_Co]->Top;
 
+       // Will be used to store the
+       struct piece *tmp;
+       tmp = malloc(sizeof(struct piece)) ;
+       tmp = board[Y_Co][X_Co]->Top;
+
        switch(no_to_move){
            case 5:
                for(i=0;i<4;i++)
                    currPtr = &currPtr->piece_below ;
+               for(i=0;i<5;i++)
+                   tmp = tmp->piece_below ;
                board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below->piece_below =board[new_Y][new_X]->Top;
                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
-               board[Y_Co][X_Co]->Top = currPtr->piece_below ;
+               board[Y_Co][X_Co]->Top = tmp ;
                free(currPtr) ;
                break ;
 
            case 4:
                for(i=0;i<3;i++)
                    currPtr = &currPtr->piece_below ;
+               for(i=0;i<4;i++)
+                   tmp = tmp->piece_below ;
                board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below =board[new_Y][new_X]->Top;
                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
-               board[Y_Co][X_Co]->Top = currPtr->piece_below ;
+               board[Y_Co][X_Co]->Top = tmp ;
                free(currPtr) ;
                break ;
 
            case 3:
                for(i=0;i<2;i++)
                    currPtr = &currPtr->piece_below ;
+               for(i=0;i<3;i++)
+                   tmp = tmp->piece_below ;
                board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below =board[new_Y][new_X]->Top;
                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
-               board[Y_Co][X_Co]->Top = currPtr->piece_below ;
+               board[Y_Co][X_Co]->Top = tmp ;
                free(currPtr) ;
                break ;
-
            case 2:
                currPtr = &currPtr->piece_below ;
+               tmp = tmp->piece_below ;
+               tmp = tmp->piece_below ;
+               //board[Y_Co][X_Co]->Top =  tmp ;
                board[Y_Co][X_Co]->Top->piece_below->piece_below = board[new_Y][new_X]->Top;
+               //currPtr = board[new_Y][new_X]->Top ;
                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
-               board[Y_Co][X_Co]->Top = NULL ;
+               board[Y_Co][X_Co]->Top =  tmp ;
                free(currPtr) ;
                break ;
+           case 1:
+               tmp=tmp->piece_below ;
+               board[Y_Co][X_Co]->Top->piece_below = board[new_Y][new_X]->Top ;
+               board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
+               board[Y_Co][X_Co]->Top = tmp ;
 
            default: printf("It's fucked mate") ; break ;
        }
