@@ -109,7 +109,7 @@ void Move(){
                    tmp = tmp->piece_below ;
 
                // Moving the stack ontop of the desired stack
-               board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below =board[new_Y][new_X]->Top;
+               board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below = board[new_Y][new_X]->Top;
                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
                board[Y_Co][X_Co]->Top = tmp ;
 
@@ -171,6 +171,24 @@ void Move(){
            default: printf("Error in move.c") ; break ;
        }
    }
+   printf("\nThere are %d pieces in column %d,row %d\n",board[new_Y][new_X]->no_Pieces,new_Y,new_X) ;
 
+/*
+   // Pop extras funtion
+   if(board[new_Y][new_X]->no_Pieces>5){
+       struct piece *pop;
+       pop = malloc(sizeof(struct piece)) ;
+       pop = board[new_Y][new_X]->Top;
+       for(i=0;i<6;i++)
+           pop = pop->piece_below;
+       board[new_Y][new_X]->Top->piece_below->piece_below->piece_below->piece_below->piece_below = NULL ;
+       while(pop->piece_below!=NULL){
+           printf("\nspare piece colour = %d\n",pop->player_col) ;
+           pop = pop->piece_below ;
+       }
+
+
+   }
+*/
        return ;
 }

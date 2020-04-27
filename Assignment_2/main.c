@@ -5,23 +5,18 @@
 
 int main() {
     printf("Hello, World!\n");
-
+    int i ;
 
 
     intialize_board() ;
 
     print_Board() ;
 
-    Move() ;
+    for(i=0;i<7;i++) {
+        Move();
 
-    print_Board() ;
+        print_Board();
+    }
 
-    Move() ;
-
-    print_Board();
-
-    Move() ;
-
-    print_Board();
     return 0;
 }
