@@ -75,62 +75,100 @@ void Move(){
        struct piece *currPtr;
        currPtr = &board[Y_Co][X_Co]->Top;
 
-       // Will be used to store the
+       // Will be used to store the piece that the position being moved from will point to
        struct piece *tmp;
        tmp = malloc(sizeof(struct piece)) ;
        tmp = board[Y_Co][X_Co]->Top;
 
        switch(no_to_move){
            case 5:
+               // Finding The bottom of the stack being moved
                for(i=0;i<4;i++)
                    currPtr = &currPtr->piece_below ;
+               // Finding the Piece that the bottom of the stack was pointing to
                for(i=0;i<5;i++)
                    tmp = tmp->piece_below ;
+
+               // Moving the stack ontop of the desired stack
                board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below->piece_below =board[new_Y][new_X]->Top;
                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
                board[Y_Co][X_Co]->Top = tmp ;
+
+               // Changing the number of pieces in the stacks
+               board[Y_Co][X_Co]->no_Pieces -= no_to_move ;
+               board[new_Y][new_X]->no_Pieces += no_to_move ;
                free(currPtr) ;
                break ;
 
            case 4:
+               // Finding The bottom of the stack being moved
                for(i=0;i<3;i++)
                    currPtr = &currPtr->piece_below ;
+               // Finding the Piece that the bottom of the stack was pointing to
                for(i=0;i<4;i++)
                    tmp = tmp->piece_below ;
+
+               // Moving the stack ontop of the desired stack
                board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below =board[new_Y][new_X]->Top;
                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
                board[Y_Co][X_Co]->Top = tmp ;
+
+               // Changing the number of pieces in the stacks
+               board[Y_Co][X_Co]->no_Pieces -= no_to_move ;
+               board[new_Y][new_X]->no_Pieces += no_to_move ;
                free(currPtr) ;
                break ;
 
            case 3:
+               // Finding The bottom of the stack being moved
                for(i=0;i<2;i++)
                    currPtr = &currPtr->piece_below ;
+               // Finding the Piece that the bottom of the stack was pointing to
                for(i=0;i<3;i++)
                    tmp = tmp->piece_below ;
+
+               // Moving the stack ontop of the desired stack
                board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below =board[new_Y][new_X]->Top;
                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
                board[Y_Co][X_Co]->Top = tmp ;
+
+               // Changing the number of pieces in the stacks
+               board[Y_Co][X_Co]->no_Pieces -= no_to_move ;
+               board[new_Y][new_X]->no_Pieces += no_to_move ;
                free(currPtr) ;
                break ;
            case 2:
+               // Finding The bottom of the stack being moved
                currPtr = &currPtr->piece_below ;
-               tmp = tmp->piece_below ;
-               tmp = tmp->piece_below ;
-               //board[Y_Co][X_Co]->Top =  tmp ;
+               // Finding the Piece that the bottom of the stack was pointing to
+               for(i=0;i<2;i++)
+                   tmp = tmp->piece_below ;
+
+               // Moving the stack ontop of the desired stack
                board[Y_Co][X_Co]->Top->piece_below->piece_below = board[new_Y][new_X]->Top;
-               //currPtr = board[new_Y][new_X]->Top ;
                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
                board[Y_Co][X_Co]->Top =  tmp ;
+
+               // Changing the number of pieces in the stacks
+               board[Y_Co][X_Co]->no_Pieces -= no_to_move ;
+               board[new_Y][new_X]->no_Pieces += no_to_move ;
                free(currPtr) ;
                break ;
            case 1:
+               // Finding the Piece that the bottom of the stack was pointing to
                tmp=tmp->piece_below ;
+
+               // Moving the stack ontop of the desired stack
                board[Y_Co][X_Co]->Top->piece_below = board[new_Y][new_X]->Top ;
                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top ;
                board[Y_Co][X_Co]->Top = tmp ;
 
-           default: printf("It's fucked mate") ; break ;
+               // Changing the number of pieces in the stacks
+               board[Y_Co][X_Co]->no_Pieces -= no_to_move ;
+               board[new_Y][new_X]->no_Pieces += no_to_move ;
+               break ;
+
+           default: printf("Error in move.c") ; break ;
        }
    }
 
