@@ -7,7 +7,7 @@
 
 void Move(int Player){
     int player_choice = 1 ; // Will be used to ask if the player would like to place a piece from hand or move a stack
-    int dom_plyer_bfr, dom_other_bfr, dom_player_aft, dom_other_aft ;
+    int dom_plyer_bfr, dom_other_bfr, dom_player_aft, dom_other_aft ; // Used to calculate the change in dominated stacks after a move
     int X_Co, Y_Co; // The co-ordinates from which the user will move pieces to
     int right_player = 0 ; // Is used to check if the stack chosen by player is dominated by them
     int no_to_move=0,no_spaces = 0 ; // The number of pieces the user will move from selected stack, and the number os spaces they will move it
@@ -16,12 +16,14 @@ void Move(int Player){
     int new_X, new_Y ; // Will be co-ordinates of the stack the user is moving to
     int i ;
 
+    printf("\nIt is player %d's turn.\n ") ;
+
     if(Player==1 &&  Pl1_piece>0){
         printf("Would you like to\n1.Move a stack on the board\n2.Place a piece from your hand on the board?") ;
         scanf("%d",&player_choice) ;
     }
     if(Player==2 &&  Pl2_piece>0){
-        printf("Would you like to\n1.Move a stack on the board\n2.Place a piece from your hand on the board?") ;
+        printf("Would you like to\n1.Move a stack on the board\n2.Place a piece from your hand on the board?\n") ;
         scanf("%d",&player_choice) ;
     }
 
@@ -35,9 +37,9 @@ void Move(int Player){
             scanf("%d", &Y_Co);
 
             if (board[Y_Co][X_Co]->no_Pieces == 0) {
-                printf("There are no pieces in this position please Choose another position.\n");
+                printf("\nThere are no pieces in this position please Choose another position.\n");
             } else if (board[Y_Co][X_Co]->Top->player_col != Player) {
-                printf("You do not dominate this stack, please choose another.\n");
+                printf("\nYou do not dominate this stack, please choose another.\n");
             } else {
                 right_player = 1;
             }
@@ -95,10 +97,6 @@ void Move(int Player){
         }
 
 
-        // Will be used to find and store the bottom of stack being moved
-        struct piece *currPtr;
-        currPtr = &board[Y_Co][X_Co]->Top;
-
         // Will be used to store the piece that the position being moved from will point to
         struct piece *tmp;
         tmp = malloc(sizeof(struct piece));
@@ -107,56 +105,37 @@ void Move(int Player){
         switch (no_to_move) {
             case 5:
                 // Finding the Piece that the bottom of the stack was pointing to
-                for (i = 0; i < 5; i++)
+                for (i = 0; i < no_to_move; i++)
                     tmp = tmp->piece_below;
 
                 // Moving the stack ontop of the desired stack
                 board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below->piece_below = board[new_Y][new_X]->Top;
-                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top;
-                board[Y_Co][X_Co]->Top = tmp;
-
-                free(currPtr);
                 break;
 
             case 4:
                 // Finding the Piece that the bottom of the stack was pointing to
-                for (i = 0; i < 4; i++)
+                for (i = 0; i < no_to_move; i++)
                     tmp = tmp->piece_below;
 
                 // Moving the stack ontop of the desired stack
                 board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below = board[new_Y][new_X]->Top;
-                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top;
-                board[Y_Co][X_Co]->Top = tmp;
-
-
-                free(currPtr);
                 break;
 
             case 3:
                 // Finding the Piece that the bottom of the stack was pointing to
-                for (i = 0; i < 3; i++)
+                for (i = 0; i < no_to_move; i++)
                     tmp = tmp->piece_below;
 
                 // Moving the stack ontop of the desired stack
                 board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below = board[new_Y][new_X]->Top;
-                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top;
-                board[Y_Co][X_Co]->Top = tmp;
-
-
-                free(currPtr);
                 break;
             case 2:
                 // Finding the Piece that the bottom of the stack was pointing to
-                for (i = 0; i < 2; i++)
+                for (i = 0; i < no_to_move; i++)
                     tmp = tmp->piece_below;
 
                 // Moving the stack ontop of the desired stack
                 board[Y_Co][X_Co]->Top->piece_below->piece_below = board[new_Y][new_X]->Top;
-                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top;
-                board[Y_Co][X_Co]->Top = tmp;
-
-
-                free(currPtr);
                 break;
             case 1:
                 // Finding the Piece that the bottom of the stack was pointing to
@@ -164,16 +143,16 @@ void Move(int Player){
 
                 // Moving the stack ontop of the desired stack
                 board[Y_Co][X_Co]->Top->piece_below = board[new_Y][new_X]->Top;
-                board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top;
-                board[Y_Co][X_Co]->Top = tmp;
-
-
                 break;
 
             default:
                 printf("Error in move.c");
                 break;
         }
+
+
+        board[new_Y][new_X]->Top = board[Y_Co][X_Co]->Top;
+        board[Y_Co][X_Co]->Top = tmp;
 
         // Changing the number of pieces in the stacks
         board[Y_Co][X_Co]->no_Pieces -= no_to_move;
@@ -219,21 +198,15 @@ void Move(int Player){
             subtract_Dom_stck_other(Player);
         }else{ printf("Youre a wamker"); }
 
-        printf("Running 2\n") ;
         struct piece *new_piece ;
         new_piece = malloc(sizeof(struct piece)) ;
-        printf("Running 3\n") ;
 
         new_piece->player_col = Player ;
-        printf("Running 4\n") ;
         new_piece->piece_below = board[Y_Co][X_Co]->Top ;
-        printf("Running 5\n") ;
         board[Y_Co][X_Co]->Top = new_piece ;
-        printf("Running 6\n") ;
-        //board[Y_Co][X_Co]->no_Pieces++;
+        board[Y_Co][X_Co]->no_Pieces++;
 
         if(Player==1) {
-            printf("Running \n") ;
             Pl1_piece--;
         }
         else {
@@ -274,6 +247,33 @@ void Move(int Player){
 
 
        return ;
+}
+
+void get_Co_ordinates(int player, int *row, int *column ){
+    int transfer_row,transfer_column ;
+
+    printf("What position would you like to move from\n");
+
+    do {
+        printf("\nPlease select a Row");
+        scanf("%d", &transfer_row);
+
+        if(transfer_row<1 || transfer_row>6)
+            printf("Invalid selection.\n");
+
+    }while(transfer_row<1 || transfer_row>6);
+
+    do {
+        printf("\nPlease select a column:");
+        scanf("%d", &transfer_column);
+
+        if(transfer_column<1 || transfer_column>6)
+            printf("Invalid selection.\n");
+
+    }while(transfer_column<1 || transfer_column>6);
+
+    *row = transfer_row ;
+    *column = transfer_column
 }
 
 void add_Dom_stck_player(int plyer){
