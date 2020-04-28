@@ -7,6 +7,7 @@
 
 void Move(int Player){
     int player_choice = 1 ; // Will be used to ask if the player would like to place a piece from hand or move a stack
+    int dom_plyer_bfr, dom_other_bfr, dom_player_aft, dom_other_aft ;
     int X_Co, Y_Co; // The co-ordinates from which the user will move pieces to
     int right_player = 0 ; // Is used to check if the stack chosen by player is dominated by them
     int no_to_move=0,no_spaces = 0 ; // The number of pieces the user will move from selected stack, and the number os spaces they will move it
@@ -80,6 +81,19 @@ void Move(int Player){
         // Calculating new co-ordinates
         new_X = X_Co + total_X;
         new_Y = Y_Co + total_y;
+
+        // Updating dominated stacks numbers
+        if(board[new_Y][new_X]->Top== NULL){
+            dom_plyer_bfr = 1 ;
+            dom_other_bfr = 0 ;
+        } else if (board[new_Y][new_X]->Top->player_col==Player){
+            dom_plyer_bfr = 2;
+            dom_other_bfr = 0;
+        } else{
+            dom_plyer_bfr = 1 ;
+            dom_other_bfr = 1;
+        }
+
 
         // Will be used to find and store the bottom of stack being moved
         struct piece *currPtr;
@@ -175,6 +189,8 @@ void Move(int Player){
         // Changing the number of pieces in the stacks
         board[Y_Co][X_Co]->no_Pieces -= no_to_move;
         board[new_Y][new_X]->no_Pieces += no_to_move;
+
+
     }
     else if (player_choice == 2){ // New Piece
         printf("What position would you like to place your piece?\n");
@@ -192,7 +208,7 @@ void Move(int Player){
         board[Y_Co][X_Co]->no_Pieces++;
 
         if(Player==1)
-            Player_1.no_Pieces_hand-- ;
+            Player_1.no_Pieces_hand--;
         else
             Player_2.no_Pieces_hand--;
 
@@ -232,20 +248,38 @@ void Move(int Player){
        return ;
 }
 
-void add_Dom_stck(int plyer){
+void add_Dom_stck_player(int plyer){
     if(plyer==1){
-        Player_1.no_Stacks++ ;
+        Player_1.no_Stacks ++ ;
     }
     if(plyer==2){
-        Player_2.no_Stacks++ ;
+        Player_2.no_Stacks ++ ;
     }
 }
 
-void subtract_Dom_stck(int plyer){
+void add_Dom_stck_other(int plyer){
     if(plyer==1){
-        Player_1.no_Stacks-- ;
+        Player_1.no_Stacks ++ ;
     }
     if(plyer==2){
+        Player_2.no_Stacks ++ ;
+    }
+}
+
+void subtract_Dom_stck_player(int plyer){
+    if(plyer==2){
+        Player_1.no_Stacks-- ;
+    }
+    if(plyer==1){
+        Player_2.no_Stacks-- ;
+    }
+}
+
+void subtract_Dom_stck_other(int plyer){
+    if(plyer==2){
+        Player_1.no_Stacks-- ;
+    }
+    if(plyer==1){
         Player_2.no_Stacks-- ;
     }
 }
