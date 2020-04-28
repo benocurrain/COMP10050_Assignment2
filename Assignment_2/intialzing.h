@@ -23,18 +23,20 @@ struct board_Pos {
 
 } ;
 
-struct Player {
+struct Players{
 
-    int no_Pieces ;
-
-    int no_Stacks ;
+    int no_Stacks  ;
 
     int no_Pieces_hand ;
 
 } ;
 
-struct Player Player_1;
-struct Player Player_2;
+//struct Players *Player_1;
+//struct Players *Player_2;
+int Pl1_stcks ;
+int Pl2_stcks ;
+int Pl1_piece ;
+int Pl2_piece ;
 
 struct board_Pos *board[8][8] ;
 
