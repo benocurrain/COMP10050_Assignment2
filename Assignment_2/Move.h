@@ -8,6 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void Move() ;
-
+void Move(int Player) ;
+void print_Boardtest() ;
 #endif //UNTITLED3_MOVE_H

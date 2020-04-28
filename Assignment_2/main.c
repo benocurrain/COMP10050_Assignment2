@@ -3,8 +3,10 @@
 #include "Print.h"
 #include "Move.h"
 
+
 int main() {
     printf("Hello, World!\n");
+    int i ;
 
 
 
@@ -12,9 +14,11 @@ int main() {
 
     print_Board() ;
 
-    Move() ;
+    for(i=0;i<11;i++) {
+        Move(((i%2)+1));
 
-    print_Board() ;
+        print_Board();
+    }
 
     return 0;
 }
