@@ -30,33 +30,9 @@ void print_Board(){
         }
         printf("\n");
     }
+    printf("\nPlayer 1 has %d stacks dominated",Pl1_stcks) ;
+    printf("\nPlayer 2 has %d stacks dominated\n",Pl2_stcks) ;
+
     return ;
 }
 
-void print_Boardtest(){
-    int i, j ;
-
-    for(i=0;i<8;i++) {
-        for (j = 0; j < 8; j++) {
-            if(board[i][j]->Top==NULL){
-                printf("|0") ;
-            }
-            else {
-                printf("|%d", board[i][j]->Top->player_col);
-                if (board[i][j]->Top->piece_below != NULL) {
-                    //printf("%d",board[i][j]->Top->piece_below->player_col) ;
-                    struct piece *currPtr;
-                    currPtr = malloc(sizeof(struct piece));
-                    currPtr = board[i][j]->Top->piece_below;
-                    printf("%d",currPtr->player_col) ;
-                    currPtr = currPtr->piece_below ;
-                    printf("%d",currPtr->player_col) ;
-                    printf("gold") ;
-
-                }
-            }
-        }
-        printf("\n");
-    }
-    return ;
-}

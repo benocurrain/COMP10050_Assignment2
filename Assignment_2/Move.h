@@ -9,5 +9,9 @@
 #include <stdlib.h>
 
 void Move(int Player) ;
+void subtract_Dom_stck_other(int plyer);
+void subtract_Dom_stck_player(int plyer);
+void add_Dom_stck_other(int plyer);
+void add_Dom_stck_player(int plyer);
 void print_Boardtest() ;
 #endif //UNTITLED3_MOVE_H

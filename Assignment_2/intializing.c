@@ -53,8 +53,8 @@ int intialize_board(){
         board[i][7]->Top = NULL ;
     }
 
-    struct Player Player_1={18,18,0} ;
-    struct Player Player_2={18,18,0} ;
+
+
 
     return 0 ;
 }
