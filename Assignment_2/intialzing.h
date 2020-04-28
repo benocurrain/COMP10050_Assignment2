@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 struct piece{
+
     int player_col ;
 
     struct piece *piece_below ;
