@@ -211,26 +211,34 @@ void Move(int Player){
         scanf("%d", &X_Co);
         printf("Please enter a Y co-ordinate:");
         scanf("%d", &Y_Co);
-
+        printf("Running 1\n") ;
         if(board[Y_Co][X_Co]->Top==NULL){
             add_Dom_stck_player(Player) ;
         } else if (board[Y_Co][X_Co]->Top->player_col != Player){
             add_Dom_stck_player(Player) ;
-        }
+            subtract_Dom_stck_other(Player);
+        }else{ printf("Youre a wamker"); }
 
+        printf("Running 2\n") ;
         struct piece *new_piece ;
         new_piece = malloc(sizeof(struct piece)) ;
+        printf("Running 3\n") ;
 
         new_piece->player_col = Player ;
+        printf("Running 4\n") ;
         new_piece->piece_below = board[Y_Co][X_Co]->Top ;
+        printf("Running 5\n") ;
         board[Y_Co][X_Co]->Top = new_piece ;
-        board[Y_Co][X_Co]->no_Pieces++;
+        printf("Running 6\n") ;
+        //board[Y_Co][X_Co]->no_Pieces++;
 
-        if(Player==1)
+        if(Player==1) {
+            printf("Running \n") ;
             Pl1_piece--;
-        else
+        }
+        else {
             Pl2_piece--;
-
+        }
     }
     else{
         printf("Error") ;
