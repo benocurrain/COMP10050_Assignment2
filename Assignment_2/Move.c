@@ -32,6 +32,18 @@ void Move(int Player){
         do {
             get_Co_ordinates(Player,&Y_Co, &X_Co);
 
+            if((Y_Co==0)||(Y_Co==7))
+                if( (X_Co==0) || (X_Co==1) ||(X_Co==6) || (X_Co==7) ){
+                    printf("Cannot use this square\n") ;
+                    continue ;
+                }
+
+            if((Y_Co==1)||(Y_Co==6))
+                if((X_Co == 0) || (X_Co == 0)){
+                    printf("Cannot use this square\n") ;
+                    continue ;
+                }
+
             if (board[Y_Co][X_Co]->no_Pieces == 0) {
                 printf("\nThere are no pieces in this position please Choose another position.\n");
             } else if (board[Y_Co][X_Co]->Top->player_col != Player) {
@@ -60,30 +72,72 @@ void Move(int Player){
 
 
         // Getting the direction the user wants to move
-        for (i = 0; i < no_spaces; i++) {
-            printf("\nWhat direction what you like to move?\n1.Up\n2.Down\n3.Left\n4.Right\n");
-            scanf("%d", &direction);
+        int ok_pos = 0 ;
+        do {
+            total_X = 0 ;
+            total_y = 0 ;
 
-            // This calculates the difference along the x and y that the user wants to move the pieces
-            switch (direction) {
-                case 1:
-                    total_y -= 1;
-                    break;
-                case 2:
-                    total_y += 1;
-                    break;
-                case 3:
-                    total_X -= 1;
-                    break;
-                case 4:
-                    total_X += 1;
-                    break;
+            for (i = 0; i < no_spaces; i++) {
+                printf("\nWhat direction what you like to move?\n1.Up\n2.Down\n3.Left\n4.Right\n");
+                scanf("%d", &direction);
+
+                // This calculates the difference along the x and y that the user wants to move the pieces
+                switch (direction) {
+                    case 1:
+                        total_y -= 1;
+                        if (Y_Co + total_y < 0) {
+                            printf("Cannot Move this way, Please select another way\n");
+                            i--;
+                            total_y += 1;
+                        }
+                        break;
+                    case 2:
+                        total_y += 1;
+                        if (Y_Co + total_y > 7) {
+                            printf("Cannot Move this way, Please select another way\n");
+                            i--;
+                            total_y -= 1;
+                        }
+                        break;
+                    case 3:
+                        total_X -= 1;
+                        if (X_Co + total_X < 0) {
+                            printf("Cannot Move this way, Please select another way\n");
+                            i--;
+                            total_X += 1;
+                        }
+                        break;
+                    case 4:
+                        total_X += 1;
+                        if (X_Co + total_X > 7) {
+                            printf("Cannot Move this way, Please select another way\n");
+                            i--;
+                            total_X -= 1;
+                        }
+                        break;
+                }
             }
-        }
 
-        // Calculating new co-ordinates
-        new_X = X_Co + total_X;
-        new_Y = Y_Co + total_y;
+            // Calculating new co-ordinates
+            new_X = X_Co + total_X;
+            new_Y = Y_Co + total_y;
+
+            if((new_Y==0)||(new_Y==7)) {
+                if ((new_X == 0) || (new_X == 1) || (new_X == 6) || (new_X == 7)) {
+                    printf("Cannot Move this square. Please select drections again\n");
+                    continue;
+                }
+            }
+            else if((new_Y==1)||(new_Y==6)) {
+                if ((new_X == 0) || (new_X == 0)) {
+                    printf("Cannot Move this square\n");
+                    continue;
+                }
+            }
+
+            ok_pos = 1 ;
+
+        }while(ok_pos==0);
 
         // Updating dominated stacks before move numbers
         if(board[new_Y][new_X]->Top == NULL){
@@ -219,7 +273,7 @@ void Move(int Player){
 
    // Pop extras function
    if(board[new_Y][new_X]->no_Pieces>5){
-       int no_to_pop = board[new_Y][new_X]->no_Pieces-5;
+       int no_to_pop = board[2][new_X]->no_Pieces-5;
        struct piece *pop;
        pop = malloc(sizeof(struct piece)) ;
        pop = board[new_Y][new_X]->Top;
@@ -247,30 +301,32 @@ void Move(int Player){
 }
 
 void get_Co_ordinates(int player, int *row, int *column ){
-    int transfer_row,transfer_column ;
+    int rw,col ;
 
     printf("What position would you like to move from\n");
 
     do {
         printf("\nPlease select a Row:");
-        scanf("%d", &transfer_row);
+        scanf("%d", &rw);
 
-        if(transfer_row<1 || transfer_row>6)
+        if(rw<0 || rw>7)
             printf("Invalid selection.\n");
 
-    }while(transfer_row<1 || transfer_row>6);
+    }while(rw<0 || rw>7);
 
     do {
         printf("\nPlease select a column:");
-        scanf("%d", &transfer_column);
+        scanf("%d", &col);
 
-        if(transfer_column<1 || transfer_column>6)
+        if(col<0 || col>7)
             printf("Invalid selection.\n");
 
-    }while(transfer_column<1 || transfer_column>6);
+    }while(col<0 || col>7);
 
-    *row = transfer_row ;
-    *column = transfer_column ;
+
+
+    *row = rw ;
+    *column = col ;
 }
 
 void add_Dom_stck_player(int plyer){
