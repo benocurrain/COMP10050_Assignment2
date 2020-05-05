@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 void Move(int Player) ;
-void get_Co_ordinates(int player, int *row, int *column ) ;
+void get_Co_ordinates(int *row, int *column);
 
 void subtract_Dom_stck_other(int plyer);
 void subtract_Dom_stck_player(int plyer);
