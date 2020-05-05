@@ -19,6 +19,7 @@ void Move(int Player){
 
     printf("\nIt is player %d's turn.\n ",Player) ;
 
+    // This is checking if a player has both dominated stacks and pieces in hand, in which case they need to decide what to do
     if(Player==1 && Pl1_piece == 0){
         player_choice = 1 ;
     } else if (Player == 1 && Pl1_stcks==0){
@@ -35,7 +36,7 @@ void Move(int Player){
     if(player_choice==1) { // Move stack
         // Getting the stack user would like to move
         do {
-            get_Co_ordinates(Player,&Y_Co, &X_Co);
+            get_Co_ordinates(&Y_Co, &X_Co);
 
             // Checks if there is a pieces on the selected pos, and then if the current player dominates that stack
             if (board[Y_Co][X_Co]->no_Pieces == 0) {
@@ -134,6 +135,7 @@ void Move(int Player){
 
         }while(ok_pos==0);
 
+
         // Updating dominated stacks before move numbers
         if(board[new_Y][new_X]->Top == NULL){
             dom_plyer_bfr = 1 ;
@@ -152,46 +154,30 @@ void Move(int Player){
         tmp = malloc(sizeof(struct piece));
         tmp = board[Y_Co][X_Co]->Top;
 
+        for (i = 0; i < no_to_move; i++)
+            tmp = tmp->piece_below;
+
         // Moving the stack
         switch (no_to_move) {
             case 5:
-                // Finding the Piece that the bottom of the stack was pointing to
-                for (i = 0; i < no_to_move; i++)
-                    tmp = tmp->piece_below;
-
                 // Moving the stack ontop of the desired stack
                 board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below->piece_below = board[new_Y][new_X]->Top;
                 break;
 
             case 4:
-                // Finding the Piece that the bottom of the stack was pointing to
-                for (i = 0; i < no_to_move; i++)
-                    tmp = tmp->piece_below;
-
                 // Moving the stack ontop of the desired stack
                 board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below->piece_below = board[new_Y][new_X]->Top;
                 break;
 
             case 3:
-                // Finding the Piece that the bottom of the stack was pointing to
-                for (i = 0; i < no_to_move; i++)
-                    tmp = tmp->piece_below;
-
                 // Moving the stack ontop of the desired stack
                 board[Y_Co][X_Co]->Top->piece_below->piece_below->piece_below = board[new_Y][new_X]->Top;
                 break;
             case 2:
-                // Finding the Piece that the bottom of the stack was pointing to
-                for (i = 0; i < no_to_move; i++)
-                    tmp = tmp->piece_below;
-
                 // Moving the stack ontop of the desired stack
                 board[Y_Co][X_Co]->Top->piece_below->piece_below = board[new_Y][new_X]->Top;
                 break;
             case 1:
-                // Finding the Piece that the bottom of the stack was pointing to
-                tmp = tmp->piece_below;
-
                 // Moving the stack ontop of the desired stack
                 board[Y_Co][X_Co]->Top->piece_below = board[new_Y][new_X]->Top;
                 break;
@@ -221,6 +207,7 @@ void Move(int Player){
             dom_other_aft = 1;
         }
 
+        // Changing the global variables of stacks dominated after the move has been made
         if(dom_player_aft-dom_plyer_bfr==1){
             add_Dom_stck_player(Player) ;
         }
@@ -236,8 +223,9 @@ void Move(int Player){
 
     }
     else if (player_choice == 2){ // New Piece
-        get_Co_ordinates(Player,&new_Y, &new_X);
+        get_Co_ordinates(&new_Y, &new_X);
 
+        // Changing the stacks dominated depending on where the new piece is being added
         if(board[new_Y][new_X]->Top==NULL){
             add_Dom_stck_player(Player) ;
         } else if (board[new_Y][new_X]->Top->player_col != Player){
@@ -265,7 +253,7 @@ void Move(int Player){
         }
     }
 
-   // Pop extras function
+   // Pop extra Pieces
    if(board[new_Y][new_X]->no_Pieces>5){
        int no_to_pop = board[new_Y][new_X]->no_Pieces-5;
 
@@ -296,12 +284,15 @@ void Move(int Player){
        return ;
 }
 
-void get_Co_ordinates(int player, int *row, int *column ){
+// Funtion for getting co-ordinates
+void get_Co_ordinates(int *row, int *column) {
     int rw,col ;
-    int ok_Pos = 0 ;
+    int ok_Pos = 0 ;  // Will be used to exit loop
+
     do {
         printf("What position would you like to move from\n");
 
+        // Getting the row
         do {
             printf("\nPlease select a Row:");
             scanf("%d", &rw);
@@ -311,6 +302,7 @@ void get_Co_ordinates(int player, int *row, int *column ){
 
         } while (rw < 0 || rw > 7);
 
+        // Getting a column
         do {
             printf("\nPlease select a column:");
             scanf("%d", &col);
@@ -320,6 +312,7 @@ void get_Co_ordinates(int player, int *row, int *column ){
 
         } while (col < 0 || col > 7);
 
+        // Checking if the selected position is one of the corner squares that are not able to be used
         if((rw==0)||(rw==7))
             if( (col==0) || (col==1) ||(col==6) || (col==7) ){
                 printf("Cannot use this square\n") ;
@@ -327,7 +320,7 @@ void get_Co_ordinates(int player, int *row, int *column ){
             }
 
         if((rw==1)||(rw==6))
-            if((col == 0) || (col == 0)){
+            if((col == 0) || (col == 7)){
                 printf("Cannot use this square\n") ;
                 continue ;
             }
@@ -340,7 +333,7 @@ void get_Co_ordinates(int player, int *row, int *column ){
     *column = col ;
 }
 
-
+// The following Functions are used to update the dominated stacks variables
 void add_Dom_stck_player(int plyer){
     if(plyer==1){
         Pl1_stcks++ ;

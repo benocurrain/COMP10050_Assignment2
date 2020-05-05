@@ -14,8 +14,10 @@ int intialize_board(){
             board[i][j] = malloc(sizeof(struct board_Pos));
             board[i][j]->no_Pieces = 1;
 
+            // Creating the piece to go on the top of the current position
             struct piece *new_Top = malloc(sizeof(struct piece));
 
+            // This is to create the checkerboard-style pattern
             if (k % 4 == 1 || k % 4 == 2) {
                 new_Top->player_col = 1;
             } else {
@@ -26,9 +28,9 @@ int intialize_board(){
             new_Top->piece_below = NULL;
             board[i][j]->Top = new_Top;
         }
-        //k+=2;
     }
 
+    // The following for loops are to point the outer positions to null
     for(i=0;i<8;i++){
         board[0][i] = malloc(sizeof(struct board_Pos));
         board[0][i]->no_Pieces = 0;
@@ -54,10 +56,12 @@ int intialize_board(){
     }
 
 
+    // Declaring the players starting information
     Pl1_stcks = 18 ;
     Pl2_stcks = 18 ;
 
     Pl1_piece = 0 ;
     Pl2_piece = 0 ;
 
+    return 0;
 }

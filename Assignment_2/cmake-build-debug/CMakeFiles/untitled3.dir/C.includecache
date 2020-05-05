@@ -6,17 +6,19 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Ben/Documents/GitHub/COMP10050_Assignment2/Assignment_2/Move.c
-Move.h
-C:/Users/Ben/Documents/GitHub/COMP10050_Assignment2/Assignment_2/Move.h
+C:/Users/Ben/Documents/GitHub/COMP10050_Assignment2/Assignment_2/Print.c
+Print.h
+C:/Users/Ben/Documents/GitHub/COMP10050_Assignment2/Assignment_2/Print.h
 intialzing.h
 C:/Users/Ben/Documents/GitHub/COMP10050_Assignment2/Assignment_2/intialzing.h
 
-C:/Users/Ben/Documents/GitHub/COMP10050_Assignment2/Assignment_2/Move.h
+C:/Users/Ben/Documents/GitHub/COMP10050_Assignment2/Assignment_2/Print.h
 stdio.h
 -
 stdlib.h
 -
+intialzing.h
+C:/Users/Ben/Documents/GitHub/COMP10050_Assignment2/Assignment_2/intialzing.h
 
 C:/Users/Ben/Documents/GitHub/COMP10050_Assignment2/Assignment_2/intialzing.h
 stdio.h

@@ -24,18 +24,11 @@ struct board_Pos {
 
 } ;
 
-struct Players{
 
-    int no_Stacks  ;
-
-    int no_Pieces_hand ;
-
-} ;
-
-//struct Players *Player_1;
-//struct Players *Player_2;
+// The following global variables are used to keep track of dominated stacks and pieces in hand
 int Pl1_stcks ;
 int Pl2_stcks ;
+
 int Pl1_piece ;
 int Pl2_piece ;
 
