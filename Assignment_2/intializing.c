@@ -57,4 +57,7 @@ int intialize_board(){
     Pl1_stcks = 18 ;
     Pl2_stcks = 18 ;
 
+    Pl1_piece = 0 ;
+    Pl2_piece = 0 ;
+
 }
